@@ -1,47 +1,37 @@
-class union_find:
-    """
-    This Union_find class implements the Union-Find data structure,
-    also known as Disjoint Set Union (DSU). This structure is used to keep track
-    of a partition of a set into disjoint subsets and supports efficient
-    union and find operations.
+from collections.abc import Hashable, Iterable
 
-    Operations:
-    - Find: Determines the root of the set a particular element belongs to.
-    - Union: Merges two sets into one by connecting their roots.
 
-    Attributes:
-    - parent: A dictionary that stores the parent of each element.
-              If an element is its own parent, it is a root.
+class UnionFind:
+    """Disjoint-set (union-find) structure over a fixed set of elements.
+
+    find() uses path compression and union() attaches the smaller tree below the
+    larger one. Together they make both operations run in amortized O(alpha(n))
+    time, where alpha is the inverse Ackermann function (at most 4 in practice).
     """
 
-    def __init__(self, V):
-        """
-        Initialize the Union-Find structure.
-        Each element starts in its own set, so the parent of each element is itself.
-        """
-        self.parent = {}
-        for v in V:#Each node starts off as its own parent
-            self.parent[v]=v
-            
+    def __init__(self, elements: Iterable[Hashable]) -> None:
+        # Every element starts as the root of its own set.
+        self.parent = {v: v for v in elements}
+        self.size = dict.fromkeys(self.parent, 1)
 
-    def find(self, v):
-        """
-        Finds the root of the set containing element v.
-        """
-        if self.parent[v] != v:
-            # Path compression: update the parent of v to its root to flatten the tree
-            self.parent[v] = self.find(self.parent[v])  # Recursive call to find the root
-        return self.parent[v]
+    def find(self, v: Hashable) -> Hashable:
+        """Return the root of the set that contains v."""
+        root = v
+        while self.parent[root] != root:
+            root = self.parent[root]
+        # Path compression: point every node on the way directly at the root.
+        while self.parent[v] != root:
+            self.parent[v], v = root, self.parent[v]
+        return root
 
-    def union(self, v, u):
-        """
-        Merges the sets containing elements v and u.
-        """
-        # Find the roots of both sets
-        v_Root = self.find(v)
-        u_Root = self.find(u)
-
-        # If they have different roots, merge them
-        if v_Root != u_Root:
-            # Make one root the parent of the other (arbitrarily)
-            self.parent[u_Root] = v_Root
+    def union(self, v: Hashable, u: Hashable) -> bool:
+        """Merge the sets of v and u. Return False if they were already one set."""
+        v_root = self.find(v)
+        u_root = self.find(u)
+        if v_root == u_root:
+            return False
+        if self.size[v_root] < self.size[u_root]:
+            v_root, u_root = u_root, v_root
+        self.parent[u_root] = v_root
+        self.size[v_root] += self.size[u_root]
+        return True

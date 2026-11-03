@@ -1,5 +1,5 @@
 from .merge_sort import merge_sort
-from .union_find import union_find
+from .union_find import UnionFind
 
 
 def kruskal(vertices_list, edges_list):
@@ -61,7 +61,7 @@ def kruskal(vertices_list, edges_list):
     """
     minimal_span_tree = []  # Initialize an empty list to store the edges of the minimum spanning tree
     merge_sort(edges_list)  # Sort the edges based on their weights using the merge_sort function
-    u_f = union_find(vertices_list)  # Create an instance of the union_find class for disjoint set operations
+    u_f = UnionFind(vertices_list)  # Create an instance of the union_find class for disjoint set operations
 
     # Iterate through each edge in the sorted list
     for u, v, weight in edges_list:
