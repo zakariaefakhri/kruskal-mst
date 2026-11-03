@@ -1,5 +1,7 @@
 """Minimum spanning trees with Kruskal's algorithm."""
 
-from .kruskal import kruskal
+from .kruskal import Edge, kruskal
+from .merge_sort import merge_sort
+from .union_find import UnionFind
 
-__all__ = ["kruskal"]
+__all__ = ["Edge", "UnionFind", "kruskal", "merge_sort"]
