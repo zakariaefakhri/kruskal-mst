@@ -60,7 +60,7 @@ def kruskal(vertices_list, edges_list):
     This output represents the edges included in the minimum spanning tree, along with their weights.
     """
     minimal_span_tree = []  # Initialize an empty list to store the edges of the minimum spanning tree
-    merge_sort(edges_list)  # Sort the edges based on their weights using the merge_sort function
+    edges_list = merge_sort(edges_list, key=lambda edge: edge[2])  # Sort a copy by weight
     u_f = UnionFind(vertices_list)  # Create an instance of the union_find class for disjoint set operations
 
     # Iterate through each edge in the sorted list
