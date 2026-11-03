@@ -1,5 +1,5 @@
-from merge_sort import merge_sort  # Importing the merge_sort function from the merge_sort module
-from union_find import union_find  # Importing the union_find class from the union_find module
+from .merge_sort import merge_sort
+from .union_find import union_find
 
 
 def kruskal(vertices_list, edges_list):
